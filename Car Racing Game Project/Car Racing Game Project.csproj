@@ -7,7 +7,7 @@
     <ProjectGuid>{8B6FBAF2-24BD-48DB-BE0C-B2286FB44BAB}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>Car_Racing_Game_MOO_ICT</RootNamespace>
-    <AssemblyName>Car Racing Game MOO ICT</AssemblyName>
+    <AssemblyName>Car Racing Game Project</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>

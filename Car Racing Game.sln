@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29613.14
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Car Racing Game MOO ICT", "Car Racing Game MOO ICT\Car Racing Game MOO ICT.csproj", "{8B6FBAF2-24BD-48DB-BE0C-B2286FB44BAB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Car Racing Game Project", "Car Racing Game Project\Car Racing Game Project.csproj", "{8B6FBAF2-24BD-48DB-BE0C-B2286FB44BAB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
