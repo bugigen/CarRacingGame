@@ -76,7 +76,21 @@ namespace Car_Racing_Game_MOO_ICT
                 MessageBox.Show("Не удалось инициализировать базу данных: " + ex.Message, "DB error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
-            ResetGame();
+            btnStart.Enabled = true;         // чтобы игрок мог нажать Start
+            explosion.Visible = false;
+            award.Visible = false;
+
+            // таймер в неактивном состоянии (если у вас таймер включается в ResetGame)
+            gameTimer.Stop();
+
+            // если TextBox создан, подсвечиваем его для ввода имени
+            if (txtPlayerName != null)
+            {
+                txtPlayerName.Enabled = true;
+                txtPlayerName.Focus();
+            }
+
+            //ResetGame();
         }
 
         private void keyisdown(object sender, KeyEventArgs e)
@@ -107,8 +121,8 @@ namespace Car_Racing_Game_MOO_ICT
         private void gameTimerEvent(object sender, EventArgs e)
         {
 
-            txtScore.Text = "Score: " + score;
             score++;
+            txtScore.Text = "Score: " + score;
 
 
             if (goleft == true && player.Left > 10)
@@ -242,7 +256,8 @@ namespace Car_Racing_Game_MOO_ICT
             // Сохранение результата в БД
             try
             {
-                string playerName = txtPlayerName?.Text?.Trim() ?? "Anonymous";
+                string playerName = txtPlayerName?.Text?.Trim();
+                if (string.IsNullOrWhiteSpace(playerName)) playerName = "Anonymous";
                 db.InsertScore(playerName, score);
             }
             catch (Exception ex)
@@ -250,6 +265,7 @@ namespace Car_Racing_Game_MOO_ICT
                 MessageBox.Show("Ошибка при сохранении результата: " + ex.Message, "DB error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
+            SetPlayerNameInputEnabled(true);    // разблокируем ввод имени после игры
             // Показ таблицы лидеров
             ShowLeaderboard();
         }
@@ -275,6 +291,8 @@ namespace Car_Racing_Game_MOO_ICT
             AI2.Top = carPosition.Next(200, 500) * -1;
             AI2.Left = carPosition.Next(245, 422);
 
+            SetPlayerNameInputEnabled(false);   // блокируем ввод имени во время игры
+
             gameTimer.Start();
 
             // Убираем фокус с текстового поля — чтобы форма получала клавиши
@@ -286,9 +304,12 @@ namespace Car_Racing_Game_MOO_ICT
 
         private void restartGame(object sender, EventArgs e)
         {
+            string playerName = (txtPlayerName?.Text ?? "").Trim();
+
             if (string.IsNullOrWhiteSpace(txtPlayerName?.Text))
             {
                 MessageBox.Show("Введите имя игрока перед стартом.", "Требуется имя", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtPlayerName.Focus();
                 return;
             }
 
@@ -339,6 +360,34 @@ namespace Car_Racing_Game_MOO_ICT
 
             leaderForm.Controls.Add(dgv);
             leaderForm.ShowDialog(this);
+        }
+
+        private void SetPlayerNameInputEnabled(bool enabled)
+        {
+            if (txtPlayerName == null) return;
+
+            // Если какой-то родитель контейнера отключён, включим его (до формы)
+            Control parent = txtPlayerName.Parent;
+            while (parent != null && parent != this)
+            {
+                // включаем только контейнеры, чтобы не нарушить логику формы
+                if (!parent.Enabled)
+                    parent.Enabled = true;
+                parent = parent.Parent;
+            }
+
+            // Основные свойства самого TextBox
+            txtPlayerName.Enabled = enabled;
+            txtPlayerName.ReadOnly = !enabled;               // если ReadOnly был включён
+            txtPlayerName.TabStop = enabled;
+            txtPlayerName.BackColor = enabled ? SystemColors.Window : SystemColors.Control;
+
+            if (enabled)
+            {
+                // ставим фокус и перемещаем каретку в конец
+                txtPlayerName.Focus();
+                txtPlayerName.SelectionStart = txtPlayerName.Text?.Length ?? 0;
+            }
         }
 
     }
