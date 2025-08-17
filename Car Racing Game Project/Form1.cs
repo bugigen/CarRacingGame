@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
 
 namespace Car_Racing_Game_MOO_ICT
 {
@@ -24,10 +25,57 @@ namespace Car_Racing_Game_MOO_ICT
 
         bool goleft, goright;
 
+        DatabaseHelper db;
+
+        // Добавьте рядом с другими полями класса, например под Random rand = new Random();
+        private Label lblName;
+        private TextBox txtPlayerName;
+
 
         public Form1()
         {
             InitializeComponent();
+
+            this.KeyPreview = true;
+            this.KeyDown += new KeyEventHandler(keyisdown);
+            this.KeyUp += new KeyEventHandler(keyisup);
+
+            lblName = new Label();
+            lblName.Name = "lblName";
+            lblName.Text = "Имя игрока:";
+            lblName.AutoSize = true;
+            lblName.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular);
+            lblName.ForeColor = Color.White; // если фон тёмный — иначе Color.Black
+            lblName.Location = new Point(10, 10); // координаты на форме
+            this.Controls.Add(lblName);
+            lblName.BringToFront();
+
+            // TextBox
+            txtPlayerName = new TextBox();
+            txtPlayerName.Name = "txtPlayerName";
+            txtPlayerName.MaxLength = 50;
+            txtPlayerName.Size = new Size(160, 26);
+            txtPlayerName.Location = new Point(lblName.Right + 8, 8);
+            this.Controls.Add(txtPlayerName);
+            txtPlayerName.BringToFront();
+
+            // Если у вас есть btnStart — сдвиньте его, чтобы не перекрывать TextBox (пример):
+            if (this.btnStart != null)
+            {
+                //this.btnStart.Location = new Point(txtPlayerName.Right + 12, 8);
+                this.btnStart.BringToFront();
+            }
+
+            db = new DatabaseHelper();
+            try
+            {
+                db.InitializeDatabase();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Не удалось инициализировать базу данных: " + ex.Message, "DB error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
             ResetGame();
         }
 
@@ -191,10 +239,21 @@ namespace Car_Racing_Game_MOO_ICT
 
             btnStart.Enabled = true;
 
+            // Сохранение результата в БД
+            try
+            {
+                string playerName = txtPlayerName?.Text?.Trim() ?? "Anonymous";
+                db.InsertScore(playerName, score);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ошибка при сохранении результата: " + ex.Message, "DB error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
 
-
-
+            // Показ таблицы лидеров
+            ShowLeaderboard();
         }
+
 
         private void ResetGame()
         {
@@ -218,12 +277,21 @@ namespace Car_Racing_Game_MOO_ICT
 
             gameTimer.Start();
 
+            // Убираем фокус с текстового поля — чтобы форма получала клавиши
+            this.ActiveControl = null;
+            this.Focus();
 
 
         }
 
         private void restartGame(object sender, EventArgs e)
         {
+            if (string.IsNullOrWhiteSpace(txtPlayerName?.Text))
+            {
+                MessageBox.Show("Введите имя игрока перед стартом.", "Требуется имя", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             ResetGame();
         }
 
@@ -233,5 +301,45 @@ namespace Car_Racing_Game_MOO_ICT
             playCrash.Play();
             
         }
+
+        private void ShowLeaderboard()
+        {
+            DataTable dt;
+            try
+            {
+                dt = db.GetTopScores(10);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ошибка при получении таблицы лидеров: " + ex.Message, "DB error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            // Формируем простое окно с DataGridView
+            Form leaderForm = new Form();
+            leaderForm.Text = "Таблица лидеров - Топ 10";
+            leaderForm.StartPosition = FormStartPosition.CenterParent;
+            leaderForm.Size = new Size(420, 360);
+            leaderForm.FormBorderStyle = FormBorderStyle.FixedDialog;
+            leaderForm.MaximizeBox = false;
+            leaderForm.MinimizeBox = false;
+
+            DataGridView dgv = new DataGridView();
+            dgv.Dock = DockStyle.Fill;
+            dgv.ReadOnly = true;
+            dgv.AllowUserToAddRows = false;
+            dgv.AllowUserToDeleteRows = false;
+            dgv.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgv.DataSource = dt;
+
+            // Красивые заголовки
+            if (dgv.Columns["Name"] != null) dgv.Columns["Name"].HeaderText = "Игрок";
+            if (dgv.Columns["Score"] != null) dgv.Columns["Score"].HeaderText = "Очки";
+            if (dgv.Columns["Date"] != null) dgv.Columns["Date"].HeaderText = "Дата (UTC)";
+
+            leaderForm.Controls.Add(dgv);
+            leaderForm.ShowDialog(this);
+        }
+
     }
 }

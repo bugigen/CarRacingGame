@@ -62,7 +62,7 @@
             this.panel1.Controls.Add(this.roadTrack2);
             this.panel1.Controls.Add(this.roadTrack1);
             this.panel1.Location = new System.Drawing.Point(16, 15);
-            this.panel1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.panel1.Margin = new System.Windows.Forms.Padding(4);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(633, 639);
             this.panel1.TabIndex = 0;
@@ -71,7 +71,7 @@
             // 
             this.AI2.Image = global::Car_Racing_Game_MOO_ICT.Properties.Resources.carGrey;
             this.AI2.Location = new System.Drawing.Point(563, 76);
-            this.AI2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.AI2.Margin = new System.Windows.Forms.Padding(4);
             this.AI2.Name = "AI2";
             this.AI2.Size = new System.Drawing.Size(50, 100);
             this.AI2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
@@ -83,7 +83,7 @@
             // 
             this.AI1.Image = global::Car_Racing_Game_MOO_ICT.Properties.Resources.carGreen;
             this.AI1.Location = new System.Drawing.Point(101, 76);
-            this.AI1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.AI1.Margin = new System.Windows.Forms.Padding(4);
             this.AI1.Name = "AI1";
             this.AI1.Size = new System.Drawing.Size(50, 101);
             this.AI1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
@@ -95,7 +95,7 @@
             // 
             this.award.Image = global::Car_Racing_Game_MOO_ICT.Properties.Resources.bronze;
             this.award.Location = new System.Drawing.Point(155, 255);
-            this.award.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.award.Margin = new System.Windows.Forms.Padding(4);
             this.award.Name = "award";
             this.award.Size = new System.Drawing.Size(250, 100);
             this.award.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
@@ -106,7 +106,7 @@
             // 
             this.explosion.Image = global::Car_Racing_Game_MOO_ICT.Properties.Resources.explosion;
             this.explosion.Location = new System.Drawing.Point(101, 462);
-            this.explosion.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.explosion.Margin = new System.Windows.Forms.Padding(4);
             this.explosion.Name = "explosion";
             this.explosion.Size = new System.Drawing.Size(64, 64);
             this.explosion.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
@@ -117,7 +117,7 @@
             // 
             this.player.Image = global::Car_Racing_Game_MOO_ICT.Properties.Resources.carYellow;
             this.player.Location = new System.Drawing.Point(287, 495);
-            this.player.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.player.Margin = new System.Windows.Forms.Padding(4);
             this.player.Name = "player";
             this.player.Size = new System.Drawing.Size(50, 99);
             this.player.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
@@ -128,7 +128,7 @@
             // 
             this.roadTrack2.Image = global::Car_Racing_Game_MOO_ICT.Properties.Resources.roadTrack;
             this.roadTrack2.Location = new System.Drawing.Point(0, 0);
-            this.roadTrack2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.roadTrack2.Margin = new System.Windows.Forms.Padding(4);
             this.roadTrack2.Name = "roadTrack2";
             this.roadTrack2.Size = new System.Drawing.Size(633, 639);
             this.roadTrack2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -139,7 +139,7 @@
             // 
             this.roadTrack1.Image = global::Car_Racing_Game_MOO_ICT.Properties.Resources.roadTrack;
             this.roadTrack1.Location = new System.Drawing.Point(0, -639);
-            this.roadTrack1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.roadTrack1.Margin = new System.Windows.Forms.Padding(4);
             this.roadTrack1.Name = "roadTrack1";
             this.roadTrack1.Size = new System.Drawing.Size(633, 639);
             this.roadTrack1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -150,7 +150,7 @@
             // 
             this.btnStart.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnStart.Location = new System.Drawing.Point(249, 726);
-            this.btnStart.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnStart.Margin = new System.Windows.Forms.Padding(4);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(132, 50);
             this.btnStart.TabIndex = 1;
@@ -177,7 +177,8 @@
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(633, 170);
             this.label2.TabIndex = 3;
-            this.label2.Text = "Press Left and Right to move the car. \r\n\r\nDon\'t hit any other cars in the game an" + "d survive as long as you can";
+            this.label2.Text = "Press Left and Right to move the car. \r\n\r\nDon\'t hit any other cars in the game an" +
+    "d survive as long as you can";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // gameTimer
@@ -196,7 +197,7 @@
             this.Controls.Add(this.txtScore);
             this.Controls.Add(this.btnStart);
             this.Controls.Add(this.panel1);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "Form1";
             this.Text = "Car Racing Game MOO ICT";
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.keyisdown);
@@ -211,6 +212,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.roadTrack2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.roadTrack1)).EndInit();
             this.ResumeLayout(false);
+
         }
 
         #endregion
