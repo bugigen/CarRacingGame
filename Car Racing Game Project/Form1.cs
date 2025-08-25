@@ -13,7 +13,6 @@ namespace Car_Racing_Game_MOO_ICT
 {
     public partial class Form1 : Form
     {
-
         int roadSpeed;
         int trafficSpeed;
         int playerSpeed = 12;
@@ -27,16 +26,12 @@ namespace Car_Racing_Game_MOO_ICT
 
         DatabaseHelper db;
 
-        // Добавьте рядом с другими полями класса, например под Random rand = new Random();
         private Label lblName;
         private TextBox txtPlayerName;
-
 
         public Form1()
         {
             InitializeComponent();
-
-            
 
             this.KeyPreview = true;
             this.KeyDown += new KeyEventHandler(keyisdown);
@@ -47,12 +42,11 @@ namespace Car_Racing_Game_MOO_ICT
             lblName.Text = "Имя игрока:";
             lblName.AutoSize = true;
             lblName.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular);
-            lblName.ForeColor = Color.Black; // если фон тёмный — иначе Color.Black
-            lblName.Location = new Point(10, 10); // координаты на форме
+            lblName.ForeColor = Color.Black;
+            lblName.Location = new Point(10, 10);
             this.Controls.Add(lblName);
             lblName.BringToFront();
 
-            // TextBox
             txtPlayerName = new TextBox();
             txtPlayerName.Name = "txtPlayerName";
             txtPlayerName.MaxLength = 50;
@@ -61,14 +55,11 @@ namespace Car_Racing_Game_MOO_ICT
             this.Controls.Add(txtPlayerName);
             txtPlayerName.BringToFront();
 
-            // Если у вас есть btnStart — сдвиньте его, чтобы не перекрывать TextBox (пример):
             if (this.btnStart != null)
-            {
-                //this.btnStart.Location = new Point(txtPlayerName.Right + 12, 8);
                 this.btnStart.BringToFront();
-            }
 
             db = new DatabaseHelper();
+
             try
             {
                 db.InitializeDatabase();
@@ -78,99 +69,74 @@ namespace Car_Racing_Game_MOO_ICT
                 MessageBox.Show("Не удалось инициализировать базу данных: " + ex.Message, "DB error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
-            btnStart.Enabled = true;         // чтобы игрок мог нажать Start
+            btnStart.Enabled = true;
             explosion.Visible = false;
             award.Visible = false;
 
-            // таймер в неактивном состоянии (если у вас таймер включается в ResetGame)
             gameTimer.Stop();
 
-            // если TextBox создан, подсвечиваем его для ввода имени
             if (txtPlayerName != null)
             {
                 txtPlayerName.Enabled = true;
                 txtPlayerName.Focus();
             }
-
-            //ResetGame();
         }
 
         private void keyisdown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Left)
-            {
                 goleft = true;
-            }
+
             if (e.KeyCode == Keys.Right)
-            {
                 goright = true;
-            }
 
         }
 
         private void keyisup(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Left)
-            {
                 goleft = false;
-            }
+
             if (e.KeyCode == Keys.Right)
-            {
                 goright = false;
-            }
         }
 
         private void gameTimerEvent(object sender, EventArgs e)
         {
-
             score++;
+
             txtScore.Text = "Score: " + score;
 
-
             if (goleft == true && player.Left > 10)
-            {
                 player.Left -= playerSpeed;
-            }
+
             if (goright == true && player.Left < 415)
-            {
                 player.Left += playerSpeed;
-            }
 
             roadTrack1.Top += roadSpeed;
             roadTrack2.Top += roadSpeed;
 
             if (roadTrack2.Top > 519)
-            {
                 roadTrack2.Top = -519;
-            }
+
             if (roadTrack1.Top > 519)
-            {
                 roadTrack1.Top = -519;
-            }
 
             AI1.Top += trafficSpeed;
             AI2.Top += trafficSpeed;
 
 
             if (AI1.Top > 530)
-            {
                 changeAIcars(AI1);
-            }
 
             if (AI2.Top > 530)
-            {
                 changeAIcars(AI2);
-            }
 
             if (player.Bounds.IntersectsWith(AI1.Bounds) || player.Bounds.IntersectsWith(AI2.Bounds))
-            {
                 gameOver();
-            }
 
             if (score > 40 && score < 500)
-            {
                 award.Image = Properties.Resources.bronze;
-            }
 
 
             if (score > 500 && score < 2000)
@@ -186,68 +152,72 @@ namespace Car_Racing_Game_MOO_ICT
                 trafficSpeed = 27;
                 roadSpeed = 25;
             }
-
-
         }
 
         private void changeAIcars(PictureBox tempCar)
         {
-
             carImage = rand.Next(1, 9);
 
             switch (carImage)
             {
-
                 case 1:
                     tempCar.Image = Properties.Resources.ambulance;
                     break;
+
                 case 2:
                     tempCar.Image = Properties.Resources.carGreen;
                     break;
+
                 case 3:
                     tempCar.Image = Properties.Resources.carGrey;
                     break;
+
                 case 4:
                     tempCar.Image = Properties.Resources.carOrange;
                     break;
+
                 case 5:
                     tempCar.Image = Properties.Resources.carPink;
                     break;
+
                 case 6:
                     tempCar.Image = Properties.Resources.CarRed;
                     break;
+
                 case 7:
                     tempCar.Image = Properties.Resources.carYellow;
                     break;
+
                 case 8:
                     tempCar.Image = Properties.Resources.TruckBlue;
                     break;
+
                 case 9:
                     tempCar.Image = Properties.Resources.TruckWhite;
                     break;
             }
 
-
             tempCar.Top = carPosition.Next(100, 400) * -1;
 
-
             if ((string)tempCar.Tag == "carLeft")
-            {
                 tempCar.Left = carPosition.Next(5, 200);
-            }
+
             if ((string)tempCar.Tag == "carRight")
-            {
                 tempCar.Left = carPosition.Next(245, 422);
-            }
         }
 
         private void gameOver()
         {
             playSound();
+
             gameTimer.Stop();
+
             explosion.Visible = true;
+
             player.Controls.Add(explosion);
+
             explosion.Location = new Point(-8, 5);
+
             explosion.BackColor = Color.Transparent;
 
             award.Visible = true;
@@ -255,11 +225,13 @@ namespace Car_Racing_Game_MOO_ICT
 
             btnStart.Enabled = true;
 
-            // Сохранение результата в БД
             try
             {
                 string playerName = txtPlayerName?.Text?.Trim();
-                if (string.IsNullOrWhiteSpace(playerName)) playerName = "Anonymous";
+
+                if (string.IsNullOrWhiteSpace(playerName))
+                    playerName = "Аноним";
+
                 db.InsertScore(playerName, score);
             }
             catch (Exception ex)
@@ -267,15 +239,13 @@ namespace Car_Racing_Game_MOO_ICT
                 MessageBox.Show("Ошибка при сохранении результата: " + ex.Message, "DB error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
-            SetPlayerNameInputEnabled(true);    // разблокируем ввод имени после игры
-            // Показ таблицы лидеров
+            SetPlayerNameInputEnabled(true);
+
             ShowLeaderboard();
         }
 
-
         private void ResetGame()
         {
-
             btnStart.Enabled = false;
             explosion.Visible = false;
             award.Visible = false;
@@ -287,21 +257,18 @@ namespace Car_Racing_Game_MOO_ICT
             roadSpeed = 12;
             trafficSpeed = 15;
 
-            AI1.Top = carPosition.Next(200, 500) *-1;
+            AI1.Top = carPosition.Next(200, 500) * -1;
             AI1.Left = carPosition.Next(5, 200);
 
             AI2.Top = carPosition.Next(200, 500) * -1;
             AI2.Left = carPosition.Next(245, 422);
 
-            SetPlayerNameInputEnabled(false);   // блокируем ввод имени во время игры
+            SetPlayerNameInputEnabled(false);
 
             gameTimer.Start();
 
-            // Убираем фокус с текстового поля — чтобы форма получала клавиши
             this.ActiveControl = null;
             this.Focus();
-
-
         }
 
         private void restartGame(object sender, EventArgs e)
@@ -311,7 +278,9 @@ namespace Car_Racing_Game_MOO_ICT
             if (string.IsNullOrWhiteSpace(txtPlayerName?.Text))
             {
                 MessageBox.Show("Введите имя игрока перед стартом.", "Требуется имя", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
                 txtPlayerName.Focus();
+
                 return;
             }
 
@@ -321,8 +290,8 @@ namespace Car_Racing_Game_MOO_ICT
         private void playSound()
         {
             System.Media.SoundPlayer playCrash = new System.Media.SoundPlayer(Properties.Resources.hit);
+
             playCrash.Play();
-            
         }
 
         private void ShowLeaderboard()
@@ -336,19 +305,23 @@ namespace Car_Racing_Game_MOO_ICT
             catch (Exception ex)
             {
                 MessageBox.Show("Ошибка при получении таблицы лидеров: " + ex.Message, "DB error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
                 return;
             }
 
-            // Формируем простое окно с DataGridView
             Form leaderForm = new Form();
+
             leaderForm.Text = "Таблица лидеров - Топ 10";
             leaderForm.StartPosition = FormStartPosition.CenterParent;
+
             leaderForm.Size = new Size(420, 360);
+
             leaderForm.FormBorderStyle = FormBorderStyle.FixedDialog;
             leaderForm.MaximizeBox = false;
             leaderForm.MinimizeBox = false;
 
             DataGridView dgv = new DataGridView();
+
             dgv.Dock = DockStyle.Fill;
             dgv.ReadOnly = true;
             dgv.AllowUserToAddRows = false;
@@ -356,42 +329,45 @@ namespace Car_Racing_Game_MOO_ICT
             dgv.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgv.DataSource = dt;
 
-            // Красивые заголовки
-            if (dgv.Columns["Name"] != null) dgv.Columns["Name"].HeaderText = "Игрок";
-            if (dgv.Columns["Score"] != null) dgv.Columns["Score"].HeaderText = "Очки";
-            if (dgv.Columns["Date"] != null) dgv.Columns["Date"].HeaderText = "Дата";
+            if (dgv.Columns["Name"] != null)
+                dgv.Columns["Name"].HeaderText = "Игрок";
+
+            if (dgv.Columns["Score"] != null)
+                dgv.Columns["Score"].HeaderText = "Очки";
+
+            if (dgv.Columns["Date"] != null) 
+                dgv.Columns["Date"].HeaderText = "Дата";
 
             leaderForm.Controls.Add(dgv);
+
             leaderForm.ShowDialog(this);
         }
 
         private void SetPlayerNameInputEnabled(bool enabled)
         {
-            if (txtPlayerName == null) return;
+            if (txtPlayerName == null)
+                return;
 
-            // Если какой-то родитель контейнера отключён, включим его (до формы)
             Control parent = txtPlayerName.Parent;
+
             while (parent != null && parent != this)
             {
-                // включаем только контейнеры, чтобы не нарушить логику формы
                 if (!parent.Enabled)
                     parent.Enabled = true;
+
                 parent = parent.Parent;
             }
 
-            // Основные свойства самого TextBox
             txtPlayerName.Enabled = enabled;
-            txtPlayerName.ReadOnly = !enabled;               // если ReadOnly был включён
+            txtPlayerName.ReadOnly = !enabled;
             txtPlayerName.TabStop = enabled;
             txtPlayerName.BackColor = enabled ? SystemColors.Window : SystemColors.Control;
 
             if (enabled)
             {
-                // ставим фокус и перемещаем каретку в конец
                 txtPlayerName.Focus();
                 txtPlayerName.SelectionStart = txtPlayerName.Text?.Length ?? 0;
             }
         }
-
     }
 }

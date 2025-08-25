@@ -19,7 +19,6 @@ namespace Car_Racing_Game_MOO_ICT
 
         public void InitializeDatabase()
         {
-            // создаём файл, если нет
             if (!File.Exists(dbPath))
             {
                 SQLiteConnection.CreateFile(dbPath);
@@ -42,8 +41,11 @@ namespace Car_Racing_Game_MOO_ICT
 
         public void InsertScore(string name, int score)
         {
-            if (string.IsNullOrWhiteSpace(name)) name = "Anonymous";
-            if (name.Length > 50) name = name.Substring(0, 50);
+            if (string.IsNullOrWhiteSpace(name))
+                name = "Аноним";
+
+            if (name.Length > 50)
+                name = name.Substring(0, 50);
 
             string dateString = DateTime.Now.ToString("dd.MM.yyyy HH:mm:ss");
 
@@ -54,7 +56,7 @@ namespace Car_Racing_Game_MOO_ICT
                 cmd.CommandText = "INSERT INTO Scores(Name, Score, Date) VALUES(@name, @score, @date);";
                 cmd.Parameters.AddWithValue("@name", name);
                 cmd.Parameters.AddWithValue("@score", score);
-                cmd.Parameters.AddWithValue("@date", dateString); // ISO time
+                cmd.Parameters.AddWithValue("@date", dateString);
                 cmd.ExecuteNonQuery();
             }
         }
@@ -62,31 +64,21 @@ namespace Car_Racing_Game_MOO_ICT
         public DataTable GetTopScores(int limit = 10)
         {
             var dt = new DataTable();
+
             using (var conn = new SQLiteConnection(connectionString))
             using (var cmd = conn.CreateCommand())
             {
                 conn.Open();
                 cmd.CommandText = "SELECT Name, Score, Date FROM Scores ORDER BY Score DESC, Date ASC LIMIT @limit;";
                 cmd.Parameters.AddWithValue("@limit", limit);
+
                 using (var adapter = new SQLiteDataAdapter(cmd))
                 {
                     adapter.Fill(dt);
                 }
             }
+
             return dt;
-        }
-
-        public void ClearScores()
-        {
-            using (var conn = new SQLiteConnection(connectionString))
-            using (var cmd = conn.CreateCommand())
-            {
-                conn.Open();
-
-                cmd.CommandText = "DELETE FROM Scores;";
-
-                cmd.ExecuteNonQuery();
-            }
         }
     }
 }
