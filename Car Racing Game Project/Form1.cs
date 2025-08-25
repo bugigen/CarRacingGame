@@ -36,6 +36,8 @@ namespace Car_Racing_Game_MOO_ICT
         {
             InitializeComponent();
 
+            
+
             this.KeyPreview = true;
             this.KeyDown += new KeyEventHandler(keyisdown);
             this.KeyUp += new KeyEventHandler(keyisup);
@@ -45,7 +47,7 @@ namespace Car_Racing_Game_MOO_ICT
             lblName.Text = "Имя игрока:";
             lblName.AutoSize = true;
             lblName.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular);
-            lblName.ForeColor = Color.White; // если фон тёмный — иначе Color.Black
+            lblName.ForeColor = Color.Black; // если фон тёмный — иначе Color.Black
             lblName.Location = new Point(10, 10); // координаты на форме
             this.Controls.Add(lblName);
             lblName.BringToFront();
@@ -326,6 +328,7 @@ namespace Car_Racing_Game_MOO_ICT
         private void ShowLeaderboard()
         {
             DataTable dt;
+
             try
             {
                 dt = db.GetTopScores(10);
@@ -356,7 +359,7 @@ namespace Car_Racing_Game_MOO_ICT
             // Красивые заголовки
             if (dgv.Columns["Name"] != null) dgv.Columns["Name"].HeaderText = "Игрок";
             if (dgv.Columns["Score"] != null) dgv.Columns["Score"].HeaderText = "Очки";
-            if (dgv.Columns["Date"] != null) dgv.Columns["Date"].HeaderText = "Дата (UTC)";
+            if (dgv.Columns["Date"] != null) dgv.Columns["Date"].HeaderText = "Дата";
 
             leaderForm.Controls.Add(dgv);
             leaderForm.ShowDialog(this);

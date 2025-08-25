@@ -45,6 +45,8 @@ namespace Car_Racing_Game_MOO_ICT
             if (string.IsNullOrWhiteSpace(name)) name = "Anonymous";
             if (name.Length > 50) name = name.Substring(0, 50);
 
+            string dateString = DateTime.Now.ToString("dd.MM.yyyy HH:mm:ss");
+
             using (var conn = new SQLiteConnection(connectionString))
             using (var cmd = conn.CreateCommand())
             {
@@ -52,7 +54,7 @@ namespace Car_Racing_Game_MOO_ICT
                 cmd.CommandText = "INSERT INTO Scores(Name, Score, Date) VALUES(@name, @score, @date);";
                 cmd.Parameters.AddWithValue("@name", name);
                 cmd.Parameters.AddWithValue("@score", score);
-                cmd.Parameters.AddWithValue("@date", DateTime.UtcNow.ToString("o")); // ISO time
+                cmd.Parameters.AddWithValue("@date", dateString); // ISO time
                 cmd.ExecuteNonQuery();
             }
         }
@@ -72,6 +74,19 @@ namespace Car_Racing_Game_MOO_ICT
                 }
             }
             return dt;
+        }
+
+        public void ClearScores()
+        {
+            using (var conn = new SQLiteConnection(connectionString))
+            using (var cmd = conn.CreateCommand())
+            {
+                conn.Open();
+
+                cmd.CommandText = "DELETE FROM Scores;";
+
+                cmd.ExecuteNonQuery();
+            }
         }
     }
 }
