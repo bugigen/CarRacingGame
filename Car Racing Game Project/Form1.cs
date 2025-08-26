@@ -22,7 +22,7 @@ namespace Car_Racing_Game_MOO_ICT
         Random rand = new Random();
         Random carPosition = new Random();
 
-        bool goleft, goright;
+        bool left, right;
 
         DatabaseHelper db;
 
@@ -85,20 +85,20 @@ namespace Car_Racing_Game_MOO_ICT
         private void keyisdown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Left)
-                goleft = true;
+                left = true;
 
             if (e.KeyCode == Keys.Right)
-                goright = true;
+                right = true;
 
         }
 
         private void keyisup(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Left)
-                goleft = false;
+                left = false;
 
             if (e.KeyCode == Keys.Right)
-                goright = false;
+                right = false;
         }
 
         private void gameTimerEvent(object sender, EventArgs e)
@@ -107,10 +107,10 @@ namespace Car_Racing_Game_MOO_ICT
 
             txtScore.Text = "Score: " + score;
 
-            if (goleft == true && player.Left > 10)
+            if (left == true && player.Left > 10)
                 player.Left -= playerSpeed;
 
-            if (goright == true && player.Left < 415)
+            if (right == true && player.Left < 415)
                 player.Left += playerSpeed;
 
             roadTrack1.Top += roadSpeed;
@@ -249,8 +249,8 @@ namespace Car_Racing_Game_MOO_ICT
             btnStart.Enabled = false;
             explosion.Visible = false;
             award.Visible = false;
-            goleft = false;
-            goright = false;
+            left = false;
+            right = false;
             score = 0;
             award.Image = Properties.Resources.bronze;
 
