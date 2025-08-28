@@ -78,6 +78,23 @@ namespace Car_Racing_Game_MOO_ICT
                 }
             }
 
+
+            // Добавляем колонку для места
+            dt.Columns.Add("Place", typeof(int));
+            dt.Columns["Place"].SetOrdinal(0); // Делаем первой колонкой
+
+            // Заполняем места с учетом одинаковых очков
+            int currentPlace = 1;
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                if (i > 0 && Convert.ToInt32(dt.Rows[i]["Score"]) < Convert.ToInt32(dt.Rows[i - 1]["Score"]))
+                {
+                    currentPlace = i + 1;
+                }
+                dt.Rows[i]["Place"] = currentPlace;
+            }
+
+
             return dt;
         }
     }

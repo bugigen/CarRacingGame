@@ -314,7 +314,7 @@ namespace Car_Racing_Game_MOO_ICT
             leaderForm.Text = "Таблица лидеров - Топ 10";
             leaderForm.StartPosition = FormStartPosition.CenterParent;
 
-            leaderForm.Size = new Size(420, 360);
+            leaderForm.Size = new Size(500, 360);
 
             leaderForm.FormBorderStyle = FormBorderStyle.FixedDialog;
             leaderForm.MaximizeBox = false;
@@ -328,6 +328,9 @@ namespace Car_Racing_Game_MOO_ICT
             dgv.AllowUserToDeleteRows = false;
             dgv.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgv.DataSource = dt;
+
+            if (dgv.Columns["Place"] != null)
+                dgv.Columns["Place"].HeaderText = "Место";
 
             if (dgv.Columns["Name"] != null)
                 dgv.Columns["Name"].HeaderText = "Игрок";
