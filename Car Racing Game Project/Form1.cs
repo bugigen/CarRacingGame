@@ -34,8 +34,8 @@ namespace Car_Racing_Game_MOO_ICT
             InitializeComponent();
 
             this.KeyPreview = true;
-            this.KeyDown += new KeyEventHandler(keyisdown);
-            this.KeyUp += new KeyEventHandler(keyisup);
+            this.KeyDown += new KeyEventHandler(HandleKeyDown);
+            this.KeyUp += new KeyEventHandler(HandleKeyUp);
 
             lblName = new Label();
             lblName.Name = "lblName";
@@ -82,7 +82,7 @@ namespace Car_Racing_Game_MOO_ICT
             }
         }
 
-        private void keyisdown(object sender, KeyEventArgs e)
+        private void HandleKeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Left)
                 left = true;
@@ -92,7 +92,7 @@ namespace Car_Racing_Game_MOO_ICT
 
         }
 
-        private void keyisup(object sender, KeyEventArgs e)
+        private void HandleKeyUp(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Left)
                 left = false;
@@ -101,7 +101,7 @@ namespace Car_Racing_Game_MOO_ICT
                 right = false;
         }
 
-        private void gameTimerEvent(object sender, EventArgs e)
+        private void GameTimerEvent(object sender, EventArgs e)
         {
             score++;
 
@@ -127,13 +127,13 @@ namespace Car_Racing_Game_MOO_ICT
 
 
             if (AI1.Top > 530)
-                changeAIcars(AI1);
+                ChangeAIcars(AI1);
 
             if (AI2.Top > 530)
-                changeAIcars(AI2);
+                ChangeAIcars(AI2);
 
             if (player.Bounds.IntersectsWith(AI1.Bounds) || player.Bounds.IntersectsWith(AI2.Bounds))
-                gameOver();
+                GameOver();
 
             if (score > 40 && score < 500)
                 award.Image = Properties.Resources.bronze;
@@ -154,7 +154,7 @@ namespace Car_Racing_Game_MOO_ICT
             }
         }
 
-        private void changeAIcars(PictureBox tempCar)
+        private void ChangeAIcars(PictureBox tempCar)
         {
             carImage = rand.Next(1, 9);
 
@@ -206,9 +206,9 @@ namespace Car_Racing_Game_MOO_ICT
                 tempCar.Left = carPosition.Next(245, 422);
         }
 
-        private void gameOver()
+        private void GameOver()
         {
-            playSound();
+            PlaySound();
 
             gameTimer.Stop();
 
@@ -271,7 +271,7 @@ namespace Car_Racing_Game_MOO_ICT
             this.Focus();
         }
 
-        private void restartGame(object sender, EventArgs e)
+        private void RestartGame(object sender, EventArgs e)
         {
             string playerName = (txtPlayerName?.Text ?? "").Trim();
 
@@ -287,7 +287,7 @@ namespace Car_Racing_Game_MOO_ICT
             ResetGame();
         }
 
-        private void playSound()
+        private void PlaySound()
         {
             System.Media.SoundPlayer playCrash = new System.Media.SoundPlayer(Properties.Resources.hit);
 
