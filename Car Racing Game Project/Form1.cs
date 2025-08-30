@@ -208,7 +208,7 @@ namespace Car_Racing_Game_MOO_ICT
 
         private void GameOver()
         {
-            playSound();
+            PlaySound();
 
             gameTimer.Stop();
 
@@ -287,7 +287,7 @@ namespace Car_Racing_Game_MOO_ICT
             ResetGame();
         }
 
-        private void playSound()
+        private void PlaySound()
         {
             System.Media.SoundPlayer playCrash = new System.Media.SoundPlayer(Properties.Resources.hit);
 
